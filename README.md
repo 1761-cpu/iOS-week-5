@@ -57,13 +57,26 @@ In the `register()` function of `SchoolManager`, before adding a new record, I c
 ## Screenshots
 Below are the screenshots showing its UI and features.
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-10-19 at 10 32 36" src="https://github.com/user-attachments/assets/0afa02d1-7d8a-4038-bbab-4c9fc8546143" />
+**Student View**
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-10-19 at 10 32 44" src="https://github.com/user-attachments/assets/f39371d7-2642-423f-954f-99818b83dbb6" />
+<img src="https://github.com/user-attachments/assets/6f03ca62-4f0d-4a0a-b4f7-bd27133fe1f2" width="350" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-10-19 at 10 32 58" src="https://github.com/user-attachments/assets/a9b75684-9d0c-487e-ac96-092d8cf8b774" />
+**Student Detail View**
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-10-19 at 10 33 15" src="https://github.com/user-attachments/assets/8198cea8-9563-4b73-ac34-b25713f2589e" />
+<img src="https://github.com/user-attachments/assets/961a8b11-a5f4-450a-83f5-2cf92952a41e" width="350" />
 
-<img width="1206" height="2622" alt="Simulator Screenshot - iPhone 17 Pro - 2026-10-19 at 10 33 37" src="https://github.com/user-attachments/assets/a74ce592-8d43-42c5-9fb7-2dab13a6182d" />
+**Edit Mark View**
 
+<img src="https://github.com/user-attachments/assets/928d76da-2243-4e82-88ca-0260a4a73997" width="350" />
+
+- *After edit mark: iOS Programming from 9.0 -> 8.5*
+  
+<img src="https://github.com/user-attachments/assets/3e1a434e-267a-46d4-a970-44ed15962bb9" width="350" />
+
+**Subject View**
+
+<img src="https://github.com/user-attachments/assets/96221f14-87a6-46b4-adc0-1d9db8e6a856" width="350" />
+
+**Academic Result View**
+
+<img src="https://github.com/user-attachments/assets/64265a23-2142-4044-b887-32fef5ceb9db" width="350" />

@@ -12,7 +12,6 @@ struct TitleBadge: View {
             .foregroundColor(color)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            // Dùng Material làm hiệu ứng kính mờ thay cho glassEffect (tương thích iOS 17)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
@@ -38,7 +37,6 @@ struct TopBar: View {
         .padding(.top, 10)
         .padding(.bottom, 16)
         .background(
-            // Nền gradient mờ để header nổi bật hơn
             LinearGradient(
                 colors: [Color(hex: "#F2F2F7").opacity(0.95), Color(hex: "#F2F2F7").opacity(0.0)],
                 startPoint: .top,

@@ -36,7 +36,6 @@ struct AcademicResultView: View {
                                 }
                             }
                         } header: {
-                            // Dùng SectionTag thay cho Text thông thường
                             SectionTag("\(rank.rawValue.uppercased()) - \(list.count) students", systemImage: rank.icon, color: rank.color)
                         }
                     }

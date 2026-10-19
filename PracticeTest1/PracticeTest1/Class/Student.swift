@@ -17,7 +17,7 @@ class Student: Identifiable {
     func getName() -> String { return name }
     func getAge() -> Int     { return age }
 
-    // MARK: - Setters (có validate)
+    // MARK: - Setters
     func setName(_ newName: String) throws {
         guard !newName.trimmingCharacters(in: .whitespaces).isEmpty else {
             throw AcademicError.emptyField("Student Name")

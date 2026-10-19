@@ -21,6 +21,8 @@ struct EditMarkView: View {
                 Section {
                     TextField("Enter mark (0 – 10)", text: $markText)
                         .keyboardType(.decimalPad)
+                        .textContentType(.none)        
+                        .autocorrectionDisabled()
                 } header: {
                     Text("Mark")
                 } footer: {
@@ -32,7 +34,7 @@ struct EditMarkView: View {
                     Section {
                         Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
                             .font(.subheadline)
-                            .foregroundColor(.red)
+                            .foregroundColor(Theme.danger)
                     }
                 }
             }
@@ -43,7 +45,9 @@ struct EditMarkView: View {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { save() }.bold()
+                    Button("Save") { save() }
+                        .bold()
+                        .foregroundColor(Theme.marks)
                 }
             }
             .onAppear {
@@ -67,4 +71,9 @@ struct EditMarkView: View {
             errorMessage = error.localizedDescription
         }
     }
+}
+
+#Preview {
+    EditMarkView(record: SchoolManager.preview().records[0])
+        .environmentObject(SchoolManager.preview())
 }

@@ -7,8 +7,14 @@ struct SubjectView: View {
         NavigationStack {
             List(manager.subjects) { subject in
                 SubjectRow(subject: subject)
+                    .listRowCard()
             }
-            .navigationTitle("Subjects")
+            .listStyle(.plain)
+            .toolbar(.hidden, for: .navigationBar)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                TopBar(title: "SUBJECTS", color: Theme.subjects, glassTint: Theme.subjects)
+            }
+            .screenBackground("subView", fit: true, topOffset: 135)
         }
     }
 }
@@ -28,10 +34,11 @@ struct SubjectRow: View {
                 Text(subject.getID())
                     .font(.caption2.bold().monospaced())
                     .padding(.horizontal, 6).padding(.vertical, 2)
-                    .background(Color.purple.opacity(0.15),
+                    .background(Theme.subjects.opacity(0.15),
                                 in: RoundedRectangle(cornerRadius: 4))
-                    .foregroundColor(.purple)
+                    .foregroundColor(Theme.subjects)
             }
+
             HStack(spacing: 16) {
                 Label("\(subject.getCredits()) credits", systemImage: "book")
                 Label("\(enrolled) enrolled",           systemImage: "person.2")
@@ -39,7 +46,8 @@ struct SubjectRow: View {
                 if let avg {
                     Text("Avg \(String(format: "%.2f", avg))")
                         .fontWeight(.semibold)
-                        .foregroundColor(avg >= SchoolManager.passMark ? .green : .red)
+                        .foregroundColor(avg >= SchoolManager.passMark
+                                         ? Theme.passed : Theme.danger)
                 } else {
                     Text("No marks").foregroundColor(.gray)
                 }
@@ -49,4 +57,8 @@ struct SubjectRow: View {
         }
         .padding(.vertical, 4)
     }
+}
+
+#Preview {
+    SubjectView().environmentObject(SchoolManager.preview())
 }

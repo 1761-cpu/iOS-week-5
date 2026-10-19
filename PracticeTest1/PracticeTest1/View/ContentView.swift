@@ -1,21 +1,21 @@
-//
-//  ContentView.swift
-//  PracticeTest1
-//
-//  Created by MAY 04 on 19/10/26.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var manager = SchoolManager(sample: true)
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            StudentView()
+                .tabItem { Label("Students", systemImage: "person.3.fill") }
+
+            SubjectView()
+                .tabItem { Label("Subjects", systemImage: "book.fill") }
+
+            AcademicResultView()
+                .tabItem { Label("Ranking", systemImage: "chart.bar.fill") }
         }
-        .padding()
+        .tint(Theme.students) 
+        .environmentObject(manager)
     }
 }
 

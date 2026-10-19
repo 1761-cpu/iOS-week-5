@@ -3,119 +3,111 @@ import SwiftUI
 struct StudentDetailView: View {
     @EnvironmentObject var manager: SchoolManager
     let student: Student
-
     @State private var editingRecord: StudentRecord?
 
     var body: some View {
-        let rs   = manager.records(ofStudent: student.getID())
-        let avg  = manager.weightedAverage(ofStudent: student.getID())
-        let rank = manager.rank(ofStudent: student.getID())
+        let avg     = manager.weightedAverage(ofStudent: student.getID())
+        let rank    = manager.rank(ofStudent: student.getID())
+        let passed  = manager.passedCount(ofStudent: student.getID())
+        let failed  = manager.failedCount(ofStudent: student.getID())
+        let records = manager.records(ofStudent: student.getID())
 
         List {
-            // MARK: Thông tin sinh viên
-            Section("Thông tin") {
-                LabeledContent("ID", value: student.getID())
-                LabeledContent("Họ tên", value: student.getName())
-                LabeledContent("Tuổi", value: "\(student.getAge())")
+            // MARK: Info
+            Section("Student Info") {
+                LabeledContent("ID",   value: student.getID())
+                LabeledContent("Name", value: student.getName())
+                LabeledContent("Age",  value: "\(student.getAge())")
             }
 
-            // MARK: Kết quả học tập
-            Section("Kết quả học tập") {
+            // MARK: Summary
+            Section("Summary") {
+                LabeledContent("Weighted Average",
+                               value: avg.map { String(format: "%.2f", $0) } ?? "—")
+
                 HStack {
-                    MetricCell(title: "GPA",
-                               value: avg.map { String(format: "%.2f", $0) } ?? "—",
-                               color: rank?.color ?? .gray)
-                    Divider()
-                    MetricCell(title: "Đạt",
-                               value: "\(manager.passedCount(ofStudent: student.getID()))",
-                               color: .green)
-                    Divider()
-                    MetricCell(title: "Rớt",
-                               value: "\(manager.failedCount(ofStudent: student.getID()))",
-                               color: .red)
-                }
-                if let rank {
-                    HStack {
-                        Text("Xếp loại:")
-                        Spacer()
-                        RankBadge(rank: rank)
+                    Text("Academic Rank")
+                    Spacer()
+                    if let rank {
+                        Text(rank.rawValue)
+                            .font(.subheadline.bold())
+                            .padding(.horizontal, 8).padding(.vertical, 2)
+                            .background(rank.color.opacity(0.15), in: Capsule())
+                            .foregroundColor(rank.color)
+                    } else {
+                        Text("—").foregroundColor(.gray)
                     }
+                }
+
+                HStack {
+                    Text("Passed Subjects")
+                    Spacer()
+                    Text("\(passed)")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Theme.passed)
+                }
+                HStack {
+                    Text("Failed Subjects")
+                    Spacer()
+                    Text("\(failed)")
+                        .fontWeight(.semibold)
+                        .foregroundColor(failed > 0 ? Theme.danger : .gray)
                 }
             }
 
-            // MARK: Danh sách môn + điểm
-            Section("Môn học & Điểm") {
-                if rs.isEmpty {
-                    Text("Chưa có môn nào.").foregroundColor(.gray)
-                }
-                ForEach(rs) { r in
-                    Button {
-                        editingRecord = r
-                    } label: {
-                        RecordRow(record: r)
+            // MARK: Records
+            Section {
+                if records.isEmpty {
+                    Text("No records yet.")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                } else {
+                    ForEach(records) { record in
+                        Button { editingRecord = record } label: {
+                            RecordRow(record: record)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
+            } header: {
+                SectionTag("Records (Tap to Edit)", systemImage: "pencil", color: Theme.marks)
             }
         }
         .navigationTitle(student.getName())
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $editingRecord) { r in
-            EditMarkView(record: r).environmentObject(manager)
+        .sheet(item: $editingRecord) { record in
+            EditMarkView(record: record)
+                .environmentObject(manager)
         }
     }
 }
 
-// MARK: - Subviews
-private struct MetricCell: View {
-    let title: String
-    let value: String
-    let color: Color
+struct RecordRow: View {
+    @ObservedObject var record: StudentRecord
 
-    var body: some View {
-        VStack(spacing: 4) {
-            Text(title.uppercased())
-                .font(.caption2.bold())
-                .foregroundColor(.gray)
-            Text(value)
-                .font(.title3.bold().monospacedDigit())
-                .foregroundColor(color)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
-private struct RecordRow: View {
-    let record: StudentRecord
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(record.subject.getName()).font(.body)
-                HStack(spacing: 8) {
-                    Text(record.subject.getID())
-                        .font(.caption.monospaced())
-                        .foregroundColor(.gray)
-                    Text("\(record.subject.getCredits()) TC")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    Text("Năm \(record.academicYear)")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
+                Text("\(record.subject.getID()) · \(record.subject.getCredits()) credits · \(record.academicYear)")
+                    .font(.caption).foregroundColor(.gray)
             }
             Spacer()
-            VStack(alignment: .trailing, spacing: 4) {
+
+            VStack(alignment: .trailing, spacing: 2) {
                 Text(String(format: "%.1f", record.getMark()))
-                    .font(.headline.monospacedDigit())
-                    .foregroundColor(record.isPassed() ? .green : .red)
-                Text(record.isPassed() ? "PASS" : "FAIL")
+                    .font(.title3.bold())
+                    .foregroundColor(Theme.marks)
+                Text(record.isPassed() ? "PASSED" : "FAILED")
                     .font(.caption2.bold())
-                    .foregroundColor(record.isPassed() ? .green : .red)
+                    .foregroundColor(record.isPassed() ? Theme.passed : Theme.danger)
             }
-            Image(systemName: "pencil.circle.fill")
-                .foregroundColor(.blue.opacity(0.7))
+
+            Image(systemName: "chevron.right")
+                .font(.caption)
+                .foregroundColor(.gray.opacity(0.5))
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
         .contentShape(Rectangle())
     }
 }

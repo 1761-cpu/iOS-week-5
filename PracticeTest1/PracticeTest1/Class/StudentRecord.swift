@@ -1,46 +1,41 @@
 import Foundation
+import Combine
 
-class StudentRecord: Identifiable {
-    /// Cần `Identifiable` để dùng trong SwiftUI `ForEach`
+class StudentRecord: Identifiable, ObservableObject {
     let id = UUID()
-
     var student: Student
     var subject: Subject
-    private var mark: Double
-    var academicYear: Int   // cần để kiểm tra trùng môn trong cùng năm học
+    @Published private(set) var mark: Double
+    var academicYear: Int
 
     // MARK: - Initializer
     init(student: Student,
          subject: Subject,
-         mark: Double = 0,
+         mark: Double = 0.0,
          academicYear: Int) {
         self.student = student
         self.subject = subject
-        // Clamp an toàn cho init — setter mới throw error
-        self.mark = min(max(mark, 0.0), 10.0)
         self.academicYear = academicYear
+        // Clamp an toàn khi khởi tạo
+        self.mark = min(max(mark, 0.0), 10.0)
     }
 
-    // MARK: - Mark
+    // MARK: - Methods
     func getMark() -> Double { return mark }
 
-    /// Setter có validate: ném lỗi nếu điểm ngoài [0, 10]
     func setMark(_ newMark: Double) throws {
         guard (0.0...10.0).contains(newMark) else {
             throw AcademicError.invalidMark(newMark)
         }
-        self.mark = newMark
+        self.mark = newMark 
     }
 
-    // MARK: - Passed?
-    /// Theo business rule: mark >= 5.0 là đạt
     func isPassed() -> Bool {
         return mark >= 5.0
     }
 
-    // MARK: - Display
     func displayInfo() -> String {
         let status = isPassed() ? "PASSED" : "FAILED"
-        return "Record[\(student.getName()) – \(subject.getName()), mark=\(mark), \(status)]"
+        return "Record: \(student.getName()) – \(subject.getName()): \(mark) (\(status))"
     }
 }

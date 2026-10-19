@@ -1,11 +1,3 @@
-//
-//  Subject.swift
-//  PracticeTest1
-//
-//  Created by MAY 04 on 19/10/26.
-//
-
-
 import Foundation
 
 class Subject: Identifiable {

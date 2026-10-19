@@ -1,11 +1,3 @@
-//
-//  Theme.swift
-//  PracticeTest1
-//
-//  Created by MAY 04 on 19/10/26.
-//
-
-
 import SwiftUI
 
 // MARK: - HEX → Color
@@ -38,9 +30,9 @@ extension Color {
 // MARK: - App Theme
 enum Theme {
     // Tab colors
-    static let students = Color(hex: "#8B8000")   // dark olive  – Students tab
-    static let subjects = Color(hex: "#6E260E")   // dark brown  – Subjects tab
-    static let ranking  = Color(hex: "#4C2942")   // purple      – Ranking tab
+    static let students = Color(hex: "#8B8000")   // dark olive
+    static let subjects = Color(hex: "#6E260E")   // dark brown
+    static let ranking  = Color(hex: "#4C2942")   // purple
 
     // Academic rank colors
     static let excellent = Color(hex: "#16A34A")  // green
@@ -49,12 +41,16 @@ enum Theme {
     static let fail      = Color(hex: "#DC2626")  // red
 
     // Semantic
-    static let passed   = Color(hex: "#059669")   // emerald  – PASSED badge
-    static let danger   = Color(hex: "#DC2626")   // red      – FAILED badge
-    static let gold     = Color(hex: "#FFBF00")   // amber    – stars / highlights
-    static let marks    = Color(hex: "#CD7F32")   // copper   – mark label
+    static let passed   = Color(hex: "#059669")   // emerald
+    static let danger   = Color(hex: "#DC2626")   // red
+    static let gold     = Color(hex: "#FFBF00")   // amber
+    static let marks    = Color(hex: "#CD7F32")   // copper
 
     // Surfaces
     static let cardFill    = Color.white.opacity(0.95)
-    static let tintBackdrop = Color(hex: "#F2F2F7") // systemGroupedBackground
+    static let tintBackdrop = Color(hex: "#F2F2F7")
+}
+
+#Preview {
+    ContentView()
 }

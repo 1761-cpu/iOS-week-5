@@ -8,10 +8,10 @@ enum AcademicRank: String, CaseIterable, Hashable {
 
     var color: Color {
         switch self {
-        case .excellent: return .green
-        case .good:      return .blue
-        case .average:   return .orange
-        case .fail:      return .red
+        case .excellent: return Theme.excellent
+        case .good:      return Theme.good
+        case .average:   return Theme.average
+        case .fail:      return Theme.fail
         }
     }
 
